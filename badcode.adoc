@@ -1,5 +1,7 @@
 == https://gist.github.com/klippx/bc93c15bd26b47ae5990/[diagnoses_belongs_to_me]
 
+[red]#Przykładowy kod#
+
 ```ruby
 def diagnoses_belongs_to_me                                             #28.8
     diagnoses_ids =                                                     #1.0+
