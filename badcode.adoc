@@ -1,0 +1,42 @@
+== https://gist.github.com/klippx/bc93c15bd26b47ae5990/[diagnoses_belongs_to_me]
+
+```ruby
+def diagnoses_belongs_to_me                                             #28.8
+    diagnoses_ids =                                                     #1.0+
+    rows_array = [red]#form#.[blue]#rows#.to_a[0...self.position - 1].reverse          #1.0+1.8+1.6+1.4+0.2+1.6+1.4+0.2+1.0+
+    rows_array.each do |r|                                              #1.0+
+      next if r.id == self.id                                           #8.3/3+1.4+1.2+1.4+
+      break if r.kind_of?(Journal::FormRow::ItemRow) or (r.kind_of?(Journal::FormRow::LabSampleRow) and r.billing_record_rows.any?)   #8.3/3+4.0/3+4.0/3+1.6+1.4+
+
+      if r.kind_of?(Journal::FormRow::DiagnosisRow) && r.diagnosis_id   #8.3/3+4.0/3+1.4+
+        diagnoses_ids << r.diagnosis_id                                 #1.3+1.4+
+      end
+    end
+    Diagnosis.find(diagnoses_ids)                                       #1.0
+end
+
+
+28.8: flog total
+    28.8: flog/method average
+
+    28.8: main#diagnoses_belongs_to_me    badcode.rb:1-13
+     8.3:   branch                        #8.3/3
+     4.0:   kind_of?                      #4.0/3
+     2.8:   diagnosis_id                  #1.4
+     2.8:   id                            #1.4
+     2.0:   assignment                    #1.0
+     1.8:   form                          #1.8
+     1.6:   billing_record_rows           #1.6
+     1.6:   position                      #1.6
+     1.6:   rows                          #1.6
+     1.4:   any?                          #1.4
+     1.4:   to_a                          #1.4
+     1.4:   -                             #1.4
+     1.3:   <<                            #1.3
+     1.2:   ==                            #1.2
+     1.2:   []                            #1.2
+     1.0:   find                          #1.0
+     1.0:   reverse                       #1.0
+     1.0:   each                          #1.0
+     0.4:   lit_fixnum                    #0.2
+```
